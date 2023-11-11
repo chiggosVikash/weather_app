@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:weather_app/pages/cities_list_page.dart';
+import 'package:weather_app/utils/theme/c_app_theme.dart';
 
 void main() {
   runApp(const ProviderScope(child: MyApp()));
@@ -11,12 +13,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      themeMode: ThemeMode.system,
       title: 'Weather App',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      debugShowCheckedModeBanner: false,
+      darkTheme: CAppTheme.dartTheme,
+      theme: CAppTheme.lightTheme,
+      home: CitiesListPage(),
     );
   }
 }
