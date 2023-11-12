@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:weather_app/extension/context_extension.dart';
 import 'package:weather_app/models/weather_type_model.dart';
 import 'package:weather_app/pages/individual_weather_info/location_name.dart';
 import 'package:weather_app/pages/individual_weather_info/weather_details.dart';
-import 'package:weather_app/utils/theme/constants/constant.dart';
+import 'package:weather_app/utils/constants/constant.dart';
 
 class IndividualWeatherInfo extends StatefulWidget {
+  static const routeAddress = "/individualWeatherInfo";
   final WeatherTypeDModel weatherInfoData;
   const IndividualWeatherInfo({super.key, required this.weatherInfoData});
 

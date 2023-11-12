@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:weather_app/enums/weathertype_enums.dart';
+import 'package:weather_app/utils/enums/weathertype_enums.dart';
 import 'package:weather_app/extension/context_extension.dart';
 import 'package:weather_app/models/weather_type_model.dart';
-import 'package:weather_app/pages/cities_content.dart';
+import 'package:weather_app/features/weather/presentation/widgets/cities_content.dart';
 import 'package:weather_app/pages/individual_weather_info/individual_weather_info.dart';
 import 'package:weather_app/widgets/transparent_card.dart';
 
 class CitiesListPage extends StatefulWidget {
+  static const routeAddress = "/citiesListPage";
   const CitiesListPage({super.key});
 
   @override

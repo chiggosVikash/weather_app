@@ -1,4 +1,4 @@
-import 'package:weather_app/enums/weathertype_enums.dart';
+import 'package:weather_app/utils/enums/weathertype_enums.dart';
 
 class WeatherTypeDModel {
   String icon;
