@@ -1,20 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:weather_app/extension/context_extension.dart';
+import 'package:weather_app/features/permission_handler/domain/use_cases/permission_handler_user_case.dart';
 import 'package:weather_app/models/weather_type_model.dart';
-import 'package:weather_app/pages/individual_weather_info/location_name.dart';
-import 'package:weather_app/pages/individual_weather_info/weather_details.dart';
+import 'package:weather_app/features/weather/presentation/widgets/location_name.dart';
+import 'package:weather_app/features/weather/presentation/widgets/weather_details.dart';
 import 'package:weather_app/utils/constants/constant.dart';
 
-class IndividualWeatherInfo extends StatefulWidget {
+class IndividualWeatherInfo extends ConsumerStatefulWidget {
   static const routeAddress = "/individualWeatherInfo";
   final WeatherTypeDModel weatherInfoData;
   const IndividualWeatherInfo({super.key, required this.weatherInfoData});
 
   @override
-  State<IndividualWeatherInfo> createState() => IndividualWeatherInfoState();
+  ConsumerState<IndividualWeatherInfo> createState() =>
+      IndividualWeatherInfoState();
 }
 
-class IndividualWeatherInfoState extends State<IndividualWeatherInfo> {
+class IndividualWeatherInfoState extends ConsumerState<IndividualWeatherInfo> {
+  final _permissionHandler = PermissionHandlerUseCase();
+  @override
+  void initState() {
+    super.initState();
+    Future(() async {
+      final status = await _permissionHandler.checkLocationPermissionStatus();
+      if (status == false) {
+        _permissionHandler.requestLocationPermission();
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

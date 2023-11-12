@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:weather_app/models/weather_type_model.dart';
-import 'package:weather_app/pages/cities_list_page.dart';
-import 'package:weather_app/pages/individual_weather_info/individual_weather_info.dart';
+import 'package:weather_app/features/weather/presentation/screens/cities_list_page.dart';
+import 'package:weather_app/features/weather/presentation/screens/individual_weather_info.dart';
 
 class ScreenRoute {
   Route<dynamic> onGenerateRoute(RouteSettings settings) {

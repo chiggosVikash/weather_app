@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:weather_app/enums/weathertype_enums.dart';
+import 'package:weather_app/utils/enums/weathertype_enums.dart';
 
 class Constant {
   static LinearGradient backgroundWeatherGradient(WeatherType weatherType) {
