@@ -7,12 +7,12 @@ part of 'permission_handler_provider.dart';
 // **************************************************************************
 
 String _$permissionHandlerPHash() =>
-    r'17363a40994f7278c3cbc0d0d5fc732bc0a64266';
+    r'87615ec1f0668ccb4235c5bb26cafb25e6efc71f';
 
 /// See also [PermissionHandlerP].
 @ProviderFor(PermissionHandlerP)
 final permissionHandlerPProvider =
-    AsyncNotifierProvider<PermissionHandlerP, LocationModel?>.internal(
+    AsyncNotifierProvider<PermissionHandlerP, bool>.internal(
   PermissionHandlerP.new,
   name: r'permissionHandlerPProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -22,6 +22,6 @@ final permissionHandlerPProvider =
   allTransitiveDependencies: null,
 );
 
-typedef _$PermissionHandlerP = AsyncNotifier<LocationModel?>;
+typedef _$PermissionHandlerP = AsyncNotifier<bool>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

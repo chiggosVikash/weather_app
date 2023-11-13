@@ -25,13 +25,16 @@ class PermissionDataSourceImpl implements PermissionDataSource {
   Future<bool> requestLocationPermission() async {
     try {
       final permissionStatus = await Permission.location.request();
+      if (permissionStatus.isPermanentlyDenied) {
+        throw Exception("Location Permission is permanently denied");
+      }
       if (permissionStatus.isGranted) {
         return true;
       } else {
         return false;
       }
     } catch (e) {
-      throw Exception("Permission Request Error $e");
+      rethrow;
     }
   }
 

@@ -1,25 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:weather_app/features/weather/presentation/providers/current_weather_forcast_provider.dart';
 import 'package:weather_app/utils/enums/weathertype_enums.dart';
 import 'package:weather_app/extension/context_extension.dart';
 import 'package:weather_app/models/weather_type_model.dart';
 import 'package:weather_app/features/weather/presentation/widgets/cities_content.dart';
-import 'package:weather_app/features/weather/presentation/screens/individual_weather_info.dart';
 import 'package:weather_app/widgets/transparent_card.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class CitiesListPage extends StatefulWidget {
+class CitiesListPage extends ConsumerStatefulWidget {
   static const routeAddress = "/citiesListPage";
   const CitiesListPage({super.key});
 
   @override
-  State<CitiesListPage> createState() => _CitiesListPageState();
+  ConsumerState<CitiesListPage> createState() => _CitiesListPageState();
 }
 
-class _CitiesListPageState extends State<CitiesListPage> {
+class _CitiesListPageState extends ConsumerState<CitiesListPage> {
   late List<WeatherTypeDModel> weatherInfoData;
 
   @override
   void initState() {
     super.initState();
+
+    Future(() async {
+      try {
+        ref.read(currentWeatherForcastPProvider.notifier).getCurrentWeather();
+      } catch (e) {
+        if (mounted) {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text("$e")));
+        }
+      }
+    });
+
     weatherInfoData = [
       WeatherTypeDModel(
           icon: "assets/heavy_clouds.png",
@@ -106,14 +119,14 @@ class _CitiesListPageState extends State<CitiesListPage> {
                         itemBuilder: (context, index) {
                           return GestureDetector(
                             onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          IndividualWeatherInfo(
-                                            weatherInfoData:
-                                                weatherInfoData[index],
-                                          )));
+                              // Navigator.push(
+                              //     context,
+                              //     MaterialPageRoute(
+                              //         builder: (context) =>
+                              //             IndividualWeatherInfo(
+                              //               weatherInfoData:
+                              //                   weatherInfoData[index],
+                              //             )));
                             },
                             child: TransparentCard(
                                 color: const Color(0xAAA5A5B2),

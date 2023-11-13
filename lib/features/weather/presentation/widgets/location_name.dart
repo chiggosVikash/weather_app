@@ -1,13 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:weather_app/extension/context_extension.dart';
 
-class LocationName extends StatelessWidget {
-  final String locationName;
-  const LocationName({super.key, required this.locationName});
+import '../providers/current_weather_forcast_provider.dart';
+
+class LocationName extends ConsumerWidget {
+  const LocationName({
+    super.key,
+  });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(currentWeatherForcastPProvider);
+    if (state.hasError) {
+      return Center(
+        child: Text(state.error.toString()),
+      );
+    }
+    if (state.isLoading || state.value == null) {
+      return Center(
+        child: SizedBox(
+          height: context.height * .3,
+          width: context.width,
+        ),
+      );
+    }
     return Container(
       height: context.height * .3,
       width: context.width,
@@ -20,7 +38,7 @@ class LocationName extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              locationName,
+              "${state.value!.coord.locality}",
               style: GoogleFonts.radley(
                   color: Colors.grey.shade200,
                   fontSize: ((constraints.biggest.height +

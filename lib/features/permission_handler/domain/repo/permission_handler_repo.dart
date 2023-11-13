@@ -4,4 +4,5 @@
 abstract class PermissionHandlerRepo {
   Future<bool> checkLocationPermissionStatus();
   Future<bool> requestLocationPermission();
+  Future<bool> checkLocationServiceStatus();
 }

@@ -13,4 +13,9 @@ class PermissionHandlerRepoImpl extends PermissionHandlerRepo {
   Future<bool> requestLocationPermission() {
     return _permissionDataSource.requestLocationPermission();
   }
+
+  @override
+  Future<bool> checkLocationServiceStatus() {
+    return _permissionDataSource.checkLocationServiceStatus();
+  }
 }

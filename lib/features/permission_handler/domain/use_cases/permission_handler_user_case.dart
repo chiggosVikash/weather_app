@@ -19,4 +19,10 @@ class PermissionHandlerUseCase {
   Future<bool> requestLocationPermission() {
     return _permissionHandlerRepo.requestLocationPermission();
   }
+
+  /// Returns a [Future] that completes with a [bool] indicating whether the location service is enabled or not.
+  /// Throws an [Exception] if there is an error while checking the location service status.
+  Future<bool> checkLocationServiceStatus() {
+    return _permissionHandlerRepo.checkLocationServiceStatus();
+  }
 }

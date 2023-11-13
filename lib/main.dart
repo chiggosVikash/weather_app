@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:weather_app/features/weather/presentation/screens/cities_list_page.dart';
+import 'package:weather_app/utils/screen_route/screen_route.dart';
 import 'package:weather_app/utils/theme/c_app_theme.dart';
 
 void main() {
-  
   runApp(const ProviderScope(child: MyApp()));
 }
 
@@ -13,13 +12,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenRoute = ScreenRoute();
     return MaterialApp(
+      onGenerateRoute: screenRoute.onGenerateRoute,
       themeMode: ThemeMode.system,
       title: 'Weather App',
       debugShowCheckedModeBanner: false,
       darkTheme: CAppTheme.dartTheme,
       theme: CAppTheme.lightTheme,
-      home: CitiesListPage(),
     );
   }
 }
