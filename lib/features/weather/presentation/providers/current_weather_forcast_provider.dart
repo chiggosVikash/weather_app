@@ -9,7 +9,7 @@ import '../../../../utils/services/location_service/location_service_impl.dart';
 import '../../domain/use_cases/weather_forcast_usecase.dart';
 part 'current_weather_forcast_provider.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class CurrentWeatherForcastP extends _$CurrentWeatherForcastP {
   final LocationService _locationService = LocationServiceImpl();
   final _weatherUseCase = WeatherFocastUseCase();
@@ -23,11 +23,13 @@ class CurrentWeatherForcastP extends _$CurrentWeatherForcastP {
 
   Future<void> getCurrentWeather({bool isRefresh = false}) async {
     if (!isRefresh) {
-      state = const AsyncValue.loading();
+      state = const AsyncLoading();
     }
 
     try {
+      print("Location Fetching ${DateTime.now()}");
       final location = await _locationService.getCurrentLocation();
+      print("Location Fetching End ${DateTime.now()}");
       final placeMarks = await _geocodingService.getCityNameFromCoordinates(
           latitude: location.latitude, longitude: location.longitude);
 
@@ -45,12 +47,12 @@ class CurrentWeatherForcastP extends _$CurrentWeatherForcastP {
             countryCode: placeMarks.first.isoCountryCode,
           ),
         );
-        state = AsyncValue.data(updatedWeatherData);
+        state = AsyncData(updatedWeatherData);
       } else {
-        state = AsyncValue.data(weather);
+        state = AsyncData(weather);
       }
     } catch (error, stackTrace) {
-      state = AsyncValue.error(error, stackTrace);
+      state = AsyncError(error, stackTrace);
       rethrow;
     }
   }

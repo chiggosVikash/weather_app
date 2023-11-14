@@ -40,44 +40,41 @@ class IndividualWeatherInfoState extends ConsumerState<IndividualWeatherInfo> {
                 gradient:
                     Constant.backgroundWeatherGradient(WeatherType.sunny)),
           ),
-          CustomScrollView(slivers: [
-            // SliverAppBar(
-            //   automaticallyImplyLeading: false,
-            //   forceMaterialTransparency: false,
-            //   backgroundColor: Colors.transparent,
-            //   expandedHeight: context.height * .2,
-            //   pinned: true,
-            //   floating: true,
-            // ),
-            SliverToBoxAdapter(
-                child: SafeArea(
-                    child: Column(
-              children: [
-                const LocationName(),
-                SizedBox(
-                  height: context.height,
-                  width: context.width,
-                  child: LayoutBuilder(builder: (context, constraints) {
-                    return PageView.builder(
-                        itemCount: 1,
-                        itemBuilder: (context, index) {
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              CurrentWeatherDetails(
-                                constraints: constraints,
-                              ),
-                              WeatherDetails(
-                                constraints: constraints,
-                              ),
-                            ],
-                          );
-                        });
-                  }),
-                )
-              ],
-            ))),
-          ])
+          RefreshIndicator(
+            onRefresh: () => ref
+                .read(currentWeatherForcastPProvider.notifier)
+                .getCurrentWeather(isRefresh: true),
+            child: CustomScrollView(slivers: [
+              SliverToBoxAdapter(
+                  child: SafeArea(
+                      child: Column(
+                children: [
+                  const LocationName(),
+                  SizedBox(
+                    height: context.height,
+                    width: context.width,
+                    child: LayoutBuilder(builder: (context, constraints) {
+                      return PageView.builder(
+                          itemCount: 1,
+                          itemBuilder: (context, index) {
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                CurrentWeatherDetails(
+                                  constraints: constraints,
+                                ),
+                                WeatherDetails(
+                                  constraints: constraints,
+                                ),
+                              ],
+                            );
+                          });
+                    }),
+                  )
+                ],
+              ))),
+            ]),
+          )
         ],
       ),
     );

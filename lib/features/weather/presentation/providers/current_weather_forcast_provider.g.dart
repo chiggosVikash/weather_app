@@ -7,11 +7,11 @@ part of 'current_weather_forcast_provider.dart';
 // **************************************************************************
 
 String _$currentWeatherForcastPHash() =>
-    r'199c13df23512c9ab1ad9ea592ebbe02433b36bd';
+    r'7e059358945c1e59a001b6b2d30f9cc47b68d319';
 
 /// See also [CurrentWeatherForcastP].
 @ProviderFor(CurrentWeatherForcastP)
-final currentWeatherForcastPProvider = AutoDisposeAsyncNotifierProvider<
+final currentWeatherForcastPProvider = AsyncNotifierProvider<
     CurrentWeatherForcastP, CurrentWeatherForcastModel?>.internal(
   CurrentWeatherForcastP.new,
   name: r'currentWeatherForcastPProvider',
@@ -22,7 +22,6 @@ final currentWeatherForcastPProvider = AutoDisposeAsyncNotifierProvider<
   allTransitiveDependencies: null,
 );
 
-typedef _$CurrentWeatherForcastP
-    = AutoDisposeAsyncNotifier<CurrentWeatherForcastModel?>;
+typedef _$CurrentWeatherForcastP = AsyncNotifier<CurrentWeatherForcastModel?>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

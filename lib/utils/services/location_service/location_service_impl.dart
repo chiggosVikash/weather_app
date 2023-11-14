@@ -6,10 +6,22 @@ import '../../../features/permission_handler/domain/use_cases/permission_handler
 class LocationServiceImpl implements LocationService {
   final _permissionHandler = PermissionHandlerUseCase();
 
+  /// Returns the current location of the device as a [LocationModel] object.
+  /// Throws an [Exception] if location service or location permission is not enabled.
+  /// Uses the [Geolocator] package to get the current position.
+  ///
+  /// Throws:
+  /// - [Exception] if location service is not enabled.
+  /// - [Exception] if location permission is not granted.
+  ///
+  /// Returns:
+  /// - [LocationModel] object containing the latitude and longitude of the current location.
+
   @override
   Future<LocationModel> getCurrentLocation() async {
     try {
       final status = await _permissionHandler.checkLocationServiceStatus();
+
       if (status == false) {
         throw Exception("Location Service is not enabled");
       }

@@ -16,4 +16,10 @@ Map<String, dynamic> _$LocationModelToJson(LocationModel instance) =>
     <String, dynamic>{
       'lat': instance.latitude,
       'lon': instance.longitude,
+      'locality': instance.locality,
+      'street': instance.street,
+      'countryCode': instance.countryCode,
+      'country': instance.country,
+      'postalCode': instance.postalCode,
+      'state': instance.state,
     };
