@@ -7,7 +7,7 @@ part of 'current_weather_forcast_provider.dart';
 // **************************************************************************
 
 String _$currentWeatherForcastPHash() =>
-    r'7e059358945c1e59a001b6b2d30f9cc47b68d319';
+    r'0faf991a54e1ce1e421c0c2fe77a80d1936cb65a';
 
 /// See also [CurrentWeatherForcastP].
 @ProviderFor(CurrentWeatherForcastP)

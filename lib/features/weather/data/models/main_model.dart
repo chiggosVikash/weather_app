@@ -21,4 +21,26 @@ class MainModel extends MainEntity {
 
   /// Converts Kelvin to Celcious
   double get inCelcious => temp - 273.15;
+
+  MainModel copyWith({
+    double? feelsLike,
+    double? temp,
+    double? tempMin,
+    double? tempMax,
+    int? pressure,
+    int? humidity,
+    int? seaLevel,
+    int? grndLevel,
+  }) {
+    return MainModel(
+      feelsLike: feelsLike ?? this.feelsLike,
+      temp: temp ?? this.temp,
+      tempMin: tempMin ?? this.tempMin,
+      tempMax: tempMax ?? this.tempMax,
+      pressure: pressure ?? this.pressure,
+      humidity: humidity ?? this.humidity,
+      seaLevel: seaLevel ?? this.seaLevel,
+      grndLevel: grndLevel ?? this.grndLevel,
+    );
+  }
 }

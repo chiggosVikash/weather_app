@@ -63,8 +63,23 @@ class IndividualWeatherInfoState extends ConsumerState<IndividualWeatherInfo> {
                                 CurrentWeatherDetails(
                                   constraints: constraints,
                                 ),
-                                WeatherDetails(
-                                  constraints: constraints,
+                                Consumer(
+                                  builder: (context, ref, child) {
+                                    final currentWeatherStatus = ref
+                                        .watch(currentWeatherForcastPProvider);
+                                    if (currentWeatherStatus is AsyncLoading ||
+                                        currentWeatherStatus.value == null) {
+                                      return const Center(
+                                        child: SizedBox(),
+                                      );
+                                    }
+
+                                    return WeatherDetails(
+                                      locationModel:
+                                          currentWeatherStatus.value!.coord,
+                                      constraints: constraints,
+                                    );
+                                  },
                                 ),
                               ],
                             );
