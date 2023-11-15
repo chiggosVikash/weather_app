@@ -38,7 +38,7 @@ class WeatherDetails extends ConsumerWidget {
           TransparentCard(
               color: Colors.white.withOpacity(.3),
               margin: EdgeInsets.zero,
-              child: const DayWiseWeatherDetails())
+              child: DayWiseWeatherDetails(locationModel: _locationModel))
         ],
       ),
     );

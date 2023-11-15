@@ -1,20 +1,13 @@
-import 'package:geocoding/geocoding.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:weather_app/features/weather/data/models/current_weather_forcast_model.dart';
-import 'package:weather_app/utils/services/geocoding_service/geo_coding_service.dart';
-
-import '../../../../utils/services/geocoding_service/geo_coding_service_impl.dart';
-import '../../../../utils/services/location_service/location_service.dart';
-import '../../../../utils/services/location_service/location_service_impl.dart';
+import 'package:weather_app/features/weather/presentation/providers/geo_coding_provider.dart';
+import 'package:weather_app/features/weather/presentation/providers/location_provider.dart';
 import '../../domain/use_cases/weather_forcast_usecase.dart';
 part 'current_weather_forcast_provider.g.dart';
 
 @Riverpod(keepAlive: true)
 class CurrentWeatherForcastP extends _$CurrentWeatherForcastP {
-  final LocationService _locationService = LocationServiceImpl();
   final _weatherUseCase = WeatherFocastUseCase();
-  final GeocodingService<List<Placemark>> _geocodingService =
-      GeocodingServiceImpl<List<Placemark>>();
 
   @override
   Future<CurrentWeatherForcastModel?> build() {
@@ -27,12 +20,13 @@ class CurrentWeatherForcastP extends _$CurrentWeatherForcastP {
     }
 
     try {
-      print("Location Fetching ${DateTime.now()}");
-      final location = await _locationService.getCurrentLocation();
-      print("Location Fetching End ${DateTime.now()}");
-      final placeMarks = await _geocodingService.getCityNameFromCoordinates(
-          latitude: location.latitude, longitude: location.longitude);
-
+      final location =
+          await ref.read(locationProvider.notifier).getCurrentLocation();
+      final placeMarks = await ref
+// ignore: avoid_manual_providers_as_generated_provider_dependency
+          .read(geocodingProvider.notifier)
+          .getAddressByCoordinates(
+              latitude: location!.latitude, longitude: location.longitude);
       final weather = await _weatherUseCase.getCurrentWeatherForcast(
           lat: location.latitude, lon: location.longitude);
 

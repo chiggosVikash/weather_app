@@ -52,4 +52,8 @@ class HourlyWeatherForcastP extends AutoDisposeFamilyAsyncNotifier<
       List<HourlyWeatherForcastModel> forcasts) {
     return _weatherForcastUsecase.getTodayWeatherForcast(forcasts);
   }
+
+  List<HourlyWeatherForcastModel> getDaysWiseForcastReport() {
+    return _weatherForcastUsecase.getDaysWiseForcastReport(state.value ?? []);
+  }
 }

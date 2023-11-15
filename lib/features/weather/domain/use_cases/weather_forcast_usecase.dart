@@ -60,18 +60,17 @@ class WeatherFocastUseCase {
     for (var i = 0; i < forcasts.length; i++) {
       // final onlyDate = forcasts[i].textDate.substring(0, 10);
       if (daysWiseForcast.contains(forcasts[i]) == false) {
-        final avgTemp = calculateAverageTemp(forcasts, forcasts[i].textDate);
+        final avgTemp = _calculateAverageTemp(forcasts, forcasts[i].textDate);
 
         final newForcast = forcasts[i]
             .copyWith(main: forcasts[i].main.copyWith(temp: avgTemp));
         daysWiseForcast.add(newForcast);
       }
 
-      final current = forcasts[i];
-      final next = forcasts[i + 1];
-      if (current.textDate != next.textDate) {
-        daysWiseForcast.add(current);
-      }
+      // final current = forcasts[i];
+      // if (current.textDate != next.textDate) {
+      //   daysWiseForcast.add(current);
+      // }
     }
 
     return daysWiseForcast;
@@ -82,7 +81,7 @@ class WeatherFocastUseCase {
   /// The function takes a list of [HourlyWeatherForcastModel] and a [date] string in the format "yyyy-mm-dd hh:mm:ss".
   /// It extracts the date from the string and calculates the average temperature for that date from the list of forecasts.
   /// Returns the average temperature as a double.
-  double calculateAverageTemp(
+  double _calculateAverageTemp(
       List<HourlyWeatherForcastModel> forcasts, String date) {
     final onlyDate = date.substring(0, 10);
     int totalWeatherCount = 0;
