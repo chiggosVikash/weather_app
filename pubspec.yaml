@@ -44,6 +44,9 @@ dependencies:
   geolocator: ^10.1.0
   permission_handler: ^11.0.1
   geocoding: ^2.1.1
+  isar: ^3.1.0+1
+  isar_flutter_libs: ^3.1.0+1
+  path_provider: ^2.1.1
 
 dev_dependencies:
   flutter_test:
@@ -60,6 +63,7 @@ dev_dependencies:
   custom_lint: ^0.5.3
   riverpod_lint: ^2.1.0
   json_serializable: ^6.7.1
+  isar_generator: ^3.1.0+1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -75,10 +79,13 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/heavy_clouds.png
-    - assets/mostly_cloudy.svg
-    - assets/rainy.svg
+    - assets/mostly_cloudy.png
+    - assets/rainy.png
     - assets/sunny.png
     - assets/thunderstorm.png
+    - assets/mist.png
+    - assets/snow.png
+    - assets/day_thunderstorm.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

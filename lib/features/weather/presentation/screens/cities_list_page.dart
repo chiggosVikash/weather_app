@@ -55,7 +55,7 @@ class _CitiesListPageState extends ConsumerState<CitiesListPage> {
           weatherType: "Sunny",
           location: "Mumbai"),
       WeatherTypeDModel(
-          weatherTypeEnum: WeatherType.cloudy,
+          weatherTypeEnum: WeatherType.Clouds,
           icon: "assets/mostly_cloudy.svg",
           weatherType: "Partly Cloudy",
           location: "Odhisha"),

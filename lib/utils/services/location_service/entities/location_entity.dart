@@ -1,5 +1,7 @@
 import 'package:flutter/foundation.dart';
+import 'package:isar/isar.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:weather_app/features/weather/data/models/current_weather_forcast_model.dart';
 
 @immutable
 class LocationEntity {
@@ -19,8 +21,13 @@ class LocationEntity {
   final String? postalCode;
   @JsonKey(includeFromJson: false, includeToJson: true)
   final String? state;
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  final String? subLocality;
 
-  const LocationEntity(
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  final currentLocationLink = IsarLink<CurrentWeatherForcastModel>();
+
+  LocationEntity(
       {required this.latitude,
       required this.longitude,
       this.locality,
@@ -28,5 +35,6 @@ class LocationEntity {
       this.country,
       this.countryCode,
       this.postalCode,
+      this.subLocality,
       this.street});
 }

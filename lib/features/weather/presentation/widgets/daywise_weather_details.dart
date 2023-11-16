@@ -2,20 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:weather_app/extension/context_extension.dart';
+import 'package:weather_app/features/weather/data/models/hourly_weather_forcast_model.dart';
+import 'package:weather_app/features/weather/domain/use_cases/weather_icon_usecase.dart';
 import 'package:weather_app/features/weather/presentation/providers/hourly_weather_forcast_provider.dart';
-import 'package:weather_app/utils/services/location_service/models/location_model.dart';
+import 'package:weather_app/utils/extensions/date_time_format_extension.dart';
 
 class DayWiseWeatherDetails extends ConsumerWidget {
-  final LocationModel _locationModel;
-  const DayWiseWeatherDetails({super.key, required LocationModel locationModel})
-      : _locationModel = locationModel;
+  final List<HourlyWeatherForcastModel> _hourlyWeatherData;
+  const DayWiseWeatherDetails(
+      {super.key, required List<HourlyWeatherForcastModel> hourlyWeatherData})
+      : _hourlyWeatherData = hourlyWeatherData;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.watch(hourlyWeatherProvider(_locationModel));
     final dayWiseForcastData = ref
-        .watch(hourlyWeatherProvider(_locationModel).notifier)
-        .getDaysWiseForcastReport();
+        .watch(hourlyWeatherProvider.notifier)
+        .getDaysWiseForcastReport(_hourlyWeatherData);
     return Container(
       padding: EdgeInsets.symmetric(vertical: context.height * .02),
       child: Column(
@@ -28,21 +30,22 @@ class DayWiseWeatherDetails extends ConsumerWidget {
                 return Column(
                   children: [
                     Text(
-                      dayWiseForcastData[index].onlyDate(),
+                      dayWiseForcastData[index].textDate.dayDateFormat,
                     ),
                     Image.asset(
-                      "assets/heavy_clouds.png",
+                      WeatherIconUsecase.getIcon(
+                          dayWiseForcastData[index].weather[0].icon),
                       width: context.width * .1,
                     ),
                     Text(
-                      "${dayWiseForcastData[index].main.temp.toStringAsFixed(1)}°",
+                      "${dayWiseForcastData[index].main.temp.toStringAsFixed(1)}° C",
                       style: GoogleFonts.abyssinicaSil(
                           fontSize: ((context.height + context.width) *
                                   context.aspectRatio) *
                               .033),
                     ),
                     Text(
-                      " 1-5 \nkm/h",
+                      " ${dayWiseForcastData[index].wind.speed} m/s",
                       style: GoogleFonts.openSans(
                           fontSize: ((context.height + context.width) *
                                   context.aspectRatio) *

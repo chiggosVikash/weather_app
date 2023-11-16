@@ -1,6 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:weather_app/features/weather/domain/entities/current_weather_forcast_entity.dart';
 
+import '../../../../utils/enums/weathertype_enums.dart';
 import '../../../../utils/services/location_service/models/location_model.dart';
 import 'main_model.dart';
 import 'weather_model.dart';
@@ -34,5 +35,33 @@ class CurrentWeatherForcastModel extends CurrentWeatherForcastEntity {
       weathers: weathers ?? this.weathers,
       base: base ?? this.base,
     );
+  }
+
+  WeatherType weatherType() {
+    if (weathers.isEmpty) return WeatherType.sunny;
+    switch (weathers.first.main) {
+      case "Clear":
+        return WeatherType.sunny;
+      case "Clouds":
+        return WeatherType.Clouds;
+      case "Rain":
+        return WeatherType.rainy;
+      case "Snow":
+        return WeatherType.snowy;
+      case "Haze":
+        return WeatherType.foggy;
+      case "Fog":
+        return WeatherType.foggy;
+      case "Thunderstorm":
+        return WeatherType.thunderstorm;
+      case "Windy":
+        return WeatherType.windy;
+      case "Mist":
+        return WeatherType.haze;
+      case "Drizzle":
+        return WeatherType.rainy;
+      default:
+        return WeatherType.windy;
+    }
   }
 }

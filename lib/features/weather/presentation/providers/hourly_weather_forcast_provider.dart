@@ -1,5 +1,4 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:weather_app/features/weather/data/models/hourly_weather_forcast_model.dart';
 import 'package:weather_app/utils/extensions/provider_extension.dart';
@@ -10,21 +9,19 @@ import '../../domain/use_cases/weather_forcast_usecase.dart';
 ///
 /// The provider is created using the [AsyncNotifierProvider.family] constructor and is set to autoDispose.
 /// It returns an instance of [HourlyWeatherForcastP].
-final hourlyWeatherProvider = AsyncNotifierProvider.family.autoDispose<
-    HourlyWeatherForcastP, List<HourlyWeatherForcastModel>, LocationModel>(() {
+final hourlyWeatherProvider = AsyncNotifierProvider.autoDispose<
+    HourlyWeatherForcastP, List<HourlyWeatherForcastModel>>(() {
   return HourlyWeatherForcastP();
 });
 
-class HourlyWeatherForcastP extends AutoDisposeFamilyAsyncNotifier<
-    List<HourlyWeatherForcastModel>, LocationModel> {
+class HourlyWeatherForcastP
+    extends AutoDisposeAsyncNotifier<List<HourlyWeatherForcastModel>> {
   final _weatherForcastUsecase = WeatherFocastUseCase();
   @override
-  FutureOr<List<HourlyWeatherForcastModel>> build(
-      LocationModel locationData) async {
+  FutureOr<List<HourlyWeatherForcastModel>> build() async {
     ref.cacheFor(const Duration(minutes: 5));
 
-    return get5DayWeatherForcast(
-        lat: locationData.latitude, lon: locationData.longitude);
+    return [];
   }
 
   Future<List<HourlyWeatherForcastModel>> get5DayWeatherForcast(
@@ -38,6 +35,7 @@ class HourlyWeatherForcastP extends AutoDisposeFamilyAsyncNotifier<
 
       final forcastData = await _weatherForcastUsecase.get5DayWeatherForcast(
           lat: lat, lon: lon);
+      state = AsyncData(forcastData);
       return forcastData;
     } catch (error, stackTrace) {
       if (kDebugMode) {
@@ -53,7 +51,8 @@ class HourlyWeatherForcastP extends AutoDisposeFamilyAsyncNotifier<
     return _weatherForcastUsecase.getTodayWeatherForcast(forcasts);
   }
 
-  List<HourlyWeatherForcastModel> getDaysWiseForcastReport() {
-    return _weatherForcastUsecase.getDaysWiseForcastReport(state.value ?? []);
+  List<HourlyWeatherForcastModel> getDaysWiseForcastReport(
+      List<HourlyWeatherForcastModel> forcasts) {
+    return _weatherForcastUsecase.getDaysWiseForcastReport(forcasts);
   }
 }

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:weather_app/extension/context_extension.dart';
 
+import '../../domain/use_cases/weather_icon_usecase.dart';
 import '../providers/current_weather_forcast_provider.dart';
 import 'humidity_wind_feelslike.dart';
 
@@ -46,7 +47,7 @@ class CurrentWeatherDetails extends ConsumerWidget {
           Row(
             children: [
               Text(
-                state.value!.weathers.first.main,
+                "${state.value!.weathers.first.main} ",
                 style: GoogleFonts.openSans(
                     color: Colors.grey.shade300,
                     fontSize: ((constraints.biggest.height +
@@ -55,7 +56,7 @@ class CurrentWeatherDetails extends ConsumerWidget {
                         .03),
               ),
               Image.asset(
-                "assets/sunny.png",
+                WeatherIconUsecase.getIcon(state.value!.weathers.first.icon),
                 width: constraints.maxWidth * .1,
               ),
             ],

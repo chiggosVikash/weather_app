@@ -33,6 +33,7 @@ class CurrentWeatherForcastP extends _$CurrentWeatherForcastP {
       if (placeMarks.isNotEmpty) {
         final updatedWeatherData = weather.copyWith(
           coord: location.copyWith(
+            subLocality: placeMarks.first.subLocality,
             locality: placeMarks.first.locality,
             state: placeMarks.first.administrativeArea,
             country: placeMarks.first.country,

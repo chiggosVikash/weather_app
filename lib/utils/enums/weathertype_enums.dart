@@ -1,6 +1,6 @@
 enum WeatherType {
   sunny,
-  cloudy,
+  Clouds,
   mostlycloudy,
   rainy,
   snowy,

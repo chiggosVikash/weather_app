@@ -38,7 +38,7 @@ class LocationName extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              "${state.value!.coord.locality}",
+              state.value!.coord.locationName(),
               style: GoogleFonts.radley(
                   color: Colors.grey.shade200,
                   fontSize: ((constraints.biggest.height +

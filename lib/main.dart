@@ -3,7 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:weather_app/utils/screen_route/screen_route.dart';
 import 'package:weather_app/utils/theme/c_app_theme.dart';
 
-void main() {
+import 'databases/local_database/db_setup.dart';
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await DBSetup().setup();
   runApp(const ProviderScope(child: MyApp()));
 }
 

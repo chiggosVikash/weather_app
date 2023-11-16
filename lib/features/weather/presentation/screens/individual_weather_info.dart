@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:weather_app/extension/context_extension.dart';
 import 'package:weather_app/features/weather/presentation/providers/current_weather_forcast_provider.dart';
+import 'package:weather_app/features/weather/presentation/widgets/background.dart';
 import 'package:weather_app/features/weather/presentation/widgets/current_weather_details.dart';
 import 'package:weather_app/features/weather/presentation/widgets/location_name.dart';
 import 'package:weather_app/features/weather/presentation/widgets/weather_details.dart';
-import 'package:weather_app/utils/constants/constant.dart';
-import 'package:weather_app/utils/enums/weathertype_enums.dart';
 
 class IndividualWeatherInfo extends ConsumerStatefulWidget {
   static const routeAddress = "/individualWeatherInfo";
@@ -24,8 +23,10 @@ class IndividualWeatherInfoState extends ConsumerState<IndividualWeatherInfo> {
   @override
   void initState() {
     super.initState();
-    Future(() {
-      ref.read(currentWeatherForcastPProvider.notifier).getCurrentWeather();
+    Future(() async {
+      await ref
+          .read(currentWeatherForcastPProvider.notifier)
+          .getCurrentWeather();
     });
   }
 
@@ -34,12 +35,7 @@ class IndividualWeatherInfoState extends ConsumerState<IndividualWeatherInfo> {
     return Scaffold(
       body: Stack(
         children: [
-          /// background manager
-          Container(
-            decoration: BoxDecoration(
-                gradient:
-                    Constant.backgroundWeatherGradient(WeatherType.sunny)),
-          ),
+          const Background(),
           RefreshIndicator(
             onRefresh: () => ref
                 .read(currentWeatherForcastPProvider.notifier)

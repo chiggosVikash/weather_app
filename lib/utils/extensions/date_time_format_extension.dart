@@ -10,4 +10,14 @@ extension DateTimeFormatExtension on String {
       return "DateFormatError";
     }
   }
+
+  String get dayDateFormat {
+    try {
+      final date = DateTime.parse(this);
+      final time = DateFormat("EEE,d MMM").format(date);
+      return time;
+    } catch (e) {
+      return "DateFormatError";
+    }
+  }
 }
