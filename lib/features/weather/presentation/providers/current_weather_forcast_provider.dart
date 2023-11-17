@@ -2,6 +2,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:weather_app/features/weather/data/models/current_weather_forcast_model.dart';
 import 'package:weather_app/features/weather/presentation/providers/geo_coding_provider.dart';
 import 'package:weather_app/features/weather/presentation/providers/location_provider.dart';
+import '../../../../databases/local_database/models/db_weather_model.dart';
 import '../../domain/use_cases/weather_forcast_usecase.dart';
 part 'current_weather_forcast_provider.g.dart';
 
@@ -14,7 +15,8 @@ class CurrentWeatherForcastP extends _$CurrentWeatherForcastP {
     return Future.value(null);
   }
 
-  Future<void> getCurrentWeather({bool isRefresh = false}) async {
+  Future<CurrentWeatherForcastModel> getCurrentWeather(
+      {bool isRefresh = false}) async {
     if (!isRefresh) {
       state = const AsyncLoading();
     }
@@ -46,9 +48,28 @@ class CurrentWeatherForcastP extends _$CurrentWeatherForcastP {
       } else {
         state = AsyncData(weather);
       }
+      return state.value!;
     } catch (error, stackTrace) {
       state = AsyncError(error, stackTrace);
       rethrow;
+    }
+  }
+
+  Future<void> saveWheatherInLocalDB(
+      CurrentWeatherForcastModel currentWeatherModel) async {
+    try {
+      await _weatherUseCase.saveWheatherInLocalDB(DBWeatherModel(
+        latitude: currentWeatherModel.coord.latitude,
+        longitude: currentWeatherModel.coord.longitude,
+        locality: currentWeatherModel.coord.locationName(),
+        weatherCondition: currentWeatherModel.weathers.first.main,
+        temperature: currentWeatherModel.main.temp,
+        humidity: currentWeatherModel.main.humidity,
+        windSpeed: currentWeatherModel.wind.speed,
+        icon: currentWeatherModel.weathers.first.icon,
+      ));
+    } catch (e) {
+      throw Exception("SaveWeatherInLocalDBError $e");
     }
   }
 }

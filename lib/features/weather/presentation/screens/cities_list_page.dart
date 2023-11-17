@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:weather_app/features/weather/presentation/providers/current_weather_forcast_provider.dart';
+import 'package:weather_app/features/weather/presentation/providers/saved_weather_provider.dart';
 import 'package:weather_app/utils/enums/weathertype_enums.dart';
 import 'package:weather_app/extension/context_extension.dart';
 import 'package:weather_app/models/weather_type_model.dart';
@@ -21,17 +21,6 @@ class _CitiesListPageState extends ConsumerState<CitiesListPage> {
   @override
   void initState() {
     super.initState();
-
-    Future(() async {
-      try {
-        ref.read(currentWeatherForcastPProvider.notifier).getCurrentWeather();
-      } catch (e) {
-        if (mounted) {
-          ScaffoldMessenger.of(context)
-              .showSnackBar(SnackBar(content: Text("$e")));
-        }
-      }
-    });
 
     weatherInfoData = [
       WeatherTypeDModel(
@@ -69,81 +58,98 @@ class _CitiesListPageState extends ConsumerState<CitiesListPage> {
         onPressed: () {},
         child: const Icon(Icons.add),
       ),
-      body: Container(
-        color: Theme.of(context).canvasColor,
-        child: Stack(
-          children: [
-            Container(
-              decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [
-                    Color(0xff391A49),
-                    Color(0xff301D5C),
-                    Color(0xff262171),
-                    Color(0xff301D5C),
-                    Color(0xff391A49)
+      body: Consumer(
+        builder: (context, ref, child) {
+          final savedWeathers = ref.watch(savedWeatherProvider);
+          if (savedWeathers is AsyncLoading || savedWeathers.value == null) {
+            return const Center(
+                child: RepaintBoundary(
+              child: CircularProgressIndicator(),
+            ));
+          } else if (savedWeathers is AsyncError) {
+            return Center(
+              child: Text("Error ${savedWeathers.error}"),
+            );
+          }
 
-                    // Color.fromARGB(255, 115, 136, 255),
-                    // Color.fromARGB(255, 130, 190, 238)
-                  ])),
-            ),
-            SafeArea(
-              child: Column(
-                children: [
-                  Container(
-                    margin: EdgeInsets.symmetric(
-                        horizontal: context.width * .03,
-                        vertical: context.height * .005),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Saved Locations",
-                          style: Theme.of(context).textTheme.headlineSmall,
+          return Container(
+            color: Theme.of(context).canvasColor,
+            child: Stack(
+              children: [
+                Container(
+                  decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                        Color(0xff391A49),
+                        Color(0xff301D5C),
+                        Color(0xff262171),
+                        Color(0xff301D5C),
+                        Color(0xff391A49)
+
+                        // Color.fromARGB(255, 115, 136, 255),
+                        // Color.fromARGB(255, 130, 190, 238)
+                      ])),
+                ),
+                SafeArea(
+                  child: Column(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.symmetric(
+                            horizontal: context.width * .03,
+                            vertical: context.height * .005),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Saved Locations",
+                              style: Theme.of(context).textTheme.headlineSmall,
+                            ),
+                            IconButton(
+                                style: IconButton.styleFrom(
+                                    foregroundColor: Colors.white),
+                                onPressed: () {},
+                                icon: const Icon(Icons.search))
+                          ],
                         ),
-                        IconButton(
-                            style: IconButton.styleFrom(
-                                foregroundColor: Colors.white),
-                            onPressed: () {},
-                            icon: const Icon(Icons.search))
-                      ],
-                    ),
+                      ),
+                      Expanded(
+                        child: ListView.builder(
+                            padding: EdgeInsets.symmetric(
+                                vertical: context.height * .02),
+                            itemCount: savedWeathers.value!.length,
+                            itemBuilder: (context, index) {
+                              return GestureDetector(
+                                onTap: () {
+                                  // Navigator.push(
+                                  //     context,
+                                  //     MaterialPageRoute(
+                                  //         builder: (context) =>
+                                  //             IndividualWeatherInfo(
+                                  //               weatherInfoData:
+                                  //                   weatherInfoData[index],
+                                  //             )));
+                                },
+                                child: TransparentCard(
+                                    color: const Color(0xAAA5A5B2),
+                                    margin: EdgeInsets.symmetric(
+                                        horizontal: context.width * .02,
+                                        vertical: context.height * .01),
+                                    child: CitiesContent(
+                                      dbWeatherModel:
+                                          savedWeathers.value![index],
+                                    )),
+                              );
+                            }),
+                      )
+                    ],
                   ),
-                  Expanded(
-                    child: ListView.builder(
-                        padding: EdgeInsets.symmetric(
-                            vertical: context.height * .02),
-                        itemCount: weatherInfoData.length,
-                        itemBuilder: (context, index) {
-                          return GestureDetector(
-                            onTap: () {
-                              // Navigator.push(
-                              //     context,
-                              //     MaterialPageRoute(
-                              //         builder: (context) =>
-                              //             IndividualWeatherInfo(
-                              //               weatherInfoData:
-                              //                   weatherInfoData[index],
-                              //             )));
-                            },
-                            child: TransparentCard(
-                                color: const Color(0xAAA5A5B2),
-                                margin: EdgeInsets.symmetric(
-                                    horizontal: context.width * .02,
-                                    vertical: context.height * .01),
-                                child: CitiesContent(
-                                  weatherInfoData: weatherInfoData[index],
-                                )),
-                          );
-                        }),
-                  )
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }

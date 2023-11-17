@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:weather_app/databases/local_database/models/db_weather_model.dart';
 import 'package:weather_app/extension/context_extension.dart';
-import 'package:weather_app/models/weather_type_model.dart';
+import 'package:weather_app/features/weather/domain/use_cases/weather_icon_usecase.dart';
 
-class CitiesContent extends StatelessWidget {
-  final WeatherTypeDModel weatherInfoData;
-  const CitiesContent({super.key, required this.weatherInfoData});
+class CitiesContent extends ConsumerWidget {
+  final DBWeatherModel _dbWeatherModel;
+  const CitiesContent({super.key, required DBWeatherModel dbWeatherModel})
+      : _dbWeatherModel = dbWeatherModel;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Column(
       children: [
         Row(
@@ -18,20 +21,20 @@ class CitiesContent extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    weatherInfoData.location,
+                    _dbWeatherModel.locality!,
                     style: Theme.of(context).textTheme.headlineMedium,
                   ),
-                  Text(weatherInfoData.weatherType),
+                  Text(_dbWeatherModel.weatherCondition!),
                   SizedBox(
                     height: context.height * .01,
                   ),
-                  const Text.rich(TextSpan(children: [
-                    TextSpan(text: "Humidity "),
-                    TextSpan(text: "75%")
+                  Text.rich(TextSpan(children: [
+                    const TextSpan(text: "Humidity "),
+                    TextSpan(text: "${_dbWeatherModel.humidity}%")
                   ])),
-                  const Text.rich(TextSpan(children: [
-                    TextSpan(text: "Wind "),
-                    TextSpan(text: "4.5 km/h")
+                  Text.rich(TextSpan(children: [
+                    const TextSpan(text: "Wind "),
+                    TextSpan(text: "${_dbWeatherModel.windSpeed} m/s")
                   ]))
                 ],
               ),
@@ -41,14 +44,14 @@ class CitiesContent extends StatelessWidget {
               child: Column(
                 children: [
                   Image.asset(
-                    weatherInfoData.icon,
+                    WeatherIconUsecase.getIcon(_dbWeatherModel.icon!),
                     width: context.width * .12,
                     fit: BoxFit.contain,
                   ),
                   Row(
                     children: [
                       Text(
-                        "25",
+                        "${_dbWeatherModel.temperature}",
                         style: Theme.of(context).textTheme.headlineMedium,
                       ),
                       Baseline(

@@ -1,3 +1,4 @@
+import 'package:weather_app/databases/local_database/models/db_weather_model.dart';
 import 'package:weather_app/features/weather/data/data_source/weather_forcast_datasource_impl.dart';
 import 'package:weather_app/features/weather/data/models/current_weather_forcast_model.dart';
 import 'package:weather_app/features/weather/data/models/hourly_weather_forcast_model.dart';
@@ -94,5 +95,22 @@ class WeatherFocastUseCase {
     }
 
     return totalTemp / totalWeatherCount;
+  }
+
+  Future<void> saveWheatherInLocalDB(DBWeatherModel weatherModel) async {
+    try {
+      await _weatherForcastRepo.saveWheatherInLocalDB(weatherModel);
+    } catch (e) {
+      throw Exception("SaveWeatherInLocalError $e");
+    }
+  }
+
+  Future<List<DBWeatherModel>> getAllWeatherData() async {
+    try {
+      final weathers = await _weatherForcastRepo.getAllWeatherData();
+      return weathers;
+    } catch (e) {
+      throw Exception("GetAllWeatherDataError $e");
+    }
   }
 }
