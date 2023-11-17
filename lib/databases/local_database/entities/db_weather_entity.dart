@@ -1,9 +1,11 @@
 import 'package:flutter/foundation.dart';
+import 'package:isar/isar.dart';
 
 @immutable
 class DbWeatherEntity {
   final double latitude;
   final double longitude;
+  @Index(unique: true)
   final String? locality;
   final String? weatherCondition;
   final double? temperature;
