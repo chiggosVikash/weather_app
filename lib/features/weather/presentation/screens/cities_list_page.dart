@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:weather_app/features/weather/presentation/providers/geo_coding_provider.dart';
 import 'package:weather_app/features/weather/presentation/providers/saved_weather_provider.dart';
-import 'package:weather_app/utils/enums/weathertype_enums.dart';
 import 'package:weather_app/extension/context_extension.dart';
-import 'package:weather_app/models/weather_type_model.dart';
 import 'package:weather_app/features/weather/presentation/widgets/cities_content.dart';
 import 'package:weather_app/widgets/transparent_card.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../widgets/add_location.dart';
 
 class CitiesListPage extends ConsumerStatefulWidget {
   static const routeAddress = "/citiesListPage";
@@ -16,51 +17,23 @@ class CitiesListPage extends ConsumerStatefulWidget {
 }
 
 class _CitiesListPageState extends ConsumerState<CitiesListPage> {
-  late List<WeatherTypeDModel> weatherInfoData;
-
   @override
   void initState() {
     super.initState();
-
-    weatherInfoData = [
-      WeatherTypeDModel(
-          icon: "assets/heavy_clouds.png",
-          weatherType: "Clouds",
-          weatherTypeEnum: WeatherType.mostlycloudy,
-          location: "Kurthoul"),
-      WeatherTypeDModel(
-          icon: "assets/rainy.svg",
-          weatherType: "Rainy",
-          weatherTypeEnum: WeatherType.rainy,
-          location: "New Delhi"),
-      WeatherTypeDModel(
-          icon: "assets/thunderstorm.png",
-          weatherType: "Thunderstorm",
-          weatherTypeEnum: WeatherType.thunderstorm,
-          location: "Kolkata"),
-      WeatherTypeDModel(
-          weatherTypeEnum: WeatherType.sunny,
-          icon: "assets/sunny.png",
-          weatherType: "Sunny",
-          location: "Mumbai"),
-      WeatherTypeDModel(
-          weatherTypeEnum: WeatherType.Clouds,
-          icon: "assets/mostly_cloudy.svg",
-          weatherType: "Partly Cloudy",
-          location: "Odhisha"),
-    ];
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          _showAddLocationSheet();
+        },
         child: const Icon(Icons.add),
       ),
       body: Consumer(
         builder: (context, ref, child) {
-          final savedWeathers = ref.watch(savedWeatherProvider);
+          final savedWeathers = ref.watch(getSavedWeatherProvider);
           if (savedWeathers is AsyncLoading || savedWeathers.value == null) {
             return const Center(
                 child: RepaintBoundary(
@@ -121,15 +94,22 @@ class _CitiesListPageState extends ConsumerState<CitiesListPage> {
                             itemCount: savedWeathers.value!.length,
                             itemBuilder: (context, index) {
                               return GestureDetector(
-                                onTap: () {
-                                  // Navigator.push(
-                                  //     context,
-                                  //     MaterialPageRoute(
-                                  //         builder: (context) =>
-                                  //             IndividualWeatherInfo(
-                                  //               weatherInfoData:
-                                  //                   weatherInfoData[index],
-                                  //             )));
+                                onTap: () async {
+                                  final placeMarks = await ref
+                                      .read(geocodingProvider.notifier)
+                                      .getAddressByCoordinates(
+                                          latitude: savedWeathers
+                                              .value![index].latitude,
+                                          longitude: savedWeathers
+                                              .value![index].longitude);
+
+                                  if (context.mounted) {
+                                    Navigator.pushNamedAndRemoveUntil(
+                                        context,
+                                        "/",
+                                        arguments: placeMarks,
+                                        (route) => false);
+                                  }
                                 },
                                 child: TransparentCard(
                                     color: const Color(0xAAA5A5B2),
@@ -152,5 +132,13 @@ class _CitiesListPageState extends ConsumerState<CitiesListPage> {
         },
       ),
     );
+  }
+
+  void _showAddLocationSheet() {
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return AddLocation();
+        });
   }
 }

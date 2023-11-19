@@ -1,8 +1,10 @@
+import 'package:geocoding/geocoding.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:weather_app/features/weather/data/models/current_weather_forcast_model.dart';
 import 'package:weather_app/features/weather/presentation/providers/geo_coding_provider.dart';
 import 'package:weather_app/features/weather/presentation/providers/location_provider.dart';
 import '../../../../databases/local_database/models/db_weather_model.dart';
+import '../../../../utils/services/location_service/models/location_model.dart';
 import '../../domain/use_cases/weather_forcast_usecase.dart';
 part 'current_weather_forcast_provider.g.dart';
 
@@ -16,19 +18,27 @@ class CurrentWeatherForcastP extends _$CurrentWeatherForcastP {
   }
 
   Future<CurrentWeatherForcastModel> getCurrentWeather(
-      {bool isRefresh = false}) async {
+      {List<Placemark>? placeMarks,
+      bool isRefresh = false,
+      LocationModel? location}) async {
     if (!isRefresh) {
       state = const AsyncLoading();
     }
 
     try {
-      final location =
+      location ??=
           await ref.read(locationProvider.notifier).getCurrentLocation();
-      final placeMarks = await ref
+
+      if (location == null) {
+        throw Exception("Failed to get current location");
+      }
+
+      placeMarks ??= await ref
 // ignore: avoid_manual_providers_as_generated_provider_dependency
           .read(geocodingProvider.notifier)
           .getAddressByCoordinates(
-              latitude: location!.latitude, longitude: location.longitude);
+              latitude: location.latitude, longitude: location.longitude);
+
       final weather = await _weatherUseCase.getCurrentWeatherForcast(
           lat: location.latitude, lon: location.longitude);
 

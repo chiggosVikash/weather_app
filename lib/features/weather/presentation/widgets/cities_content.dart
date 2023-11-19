@@ -51,7 +51,7 @@ class CitiesContent extends ConsumerWidget {
                   Row(
                     children: [
                       Text(
-                        "${_dbWeatherModel.temperature}",
+                        _dbWeatherModel.tempInCelicus.toStringAsFixed(1),
                         style: Theme.of(context).textTheme.headlineMedium,
                       ),
                       Baseline(

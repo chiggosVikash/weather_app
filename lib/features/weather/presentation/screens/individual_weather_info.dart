@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:weather_app/extension/context_extension.dart';
 import 'package:weather_app/features/weather/presentation/providers/current_weather_forcast_provider.dart';
 import 'package:weather_app/features/weather/presentation/screens/cities_list_page.dart';
@@ -7,11 +8,26 @@ import 'package:weather_app/features/weather/presentation/widgets/background.dar
 import 'package:weather_app/features/weather/presentation/widgets/current_weather_details.dart';
 import 'package:weather_app/features/weather/presentation/widgets/location_name.dart';
 import 'package:weather_app/features/weather/presentation/widgets/weather_details.dart';
+import 'package:weather_app/utils/services/location_service/models/location_model.dart';
+
+@immutable
+class IndividualWeatherInfoArgs {
+  final List<Placemark>? placeMarks;
+  final double? latitude;
+  final double? longitude;
+  const IndividualWeatherInfoArgs(
+      {this.placeMarks, this.latitude, this.longitude});
+}
 
 class IndividualWeatherInfo extends ConsumerStatefulWidget {
   static const routeAddress = "/individualWeatherInfo";
 
+  final IndividualWeatherInfoArgs args;
+
+  // final List<Placemark>? _placeMarks;
+
   const IndividualWeatherInfo({
+    required this.args,
     super.key,
   });
 
@@ -24,10 +40,21 @@ class IndividualWeatherInfoState extends ConsumerState<IndividualWeatherInfo> {
   @override
   void initState() {
     super.initState();
+    // for (var p in widget.args.placeMarks ?? <Placemark>[]) {
+    //   print(p.locality);
+    //   print(p.subLocality);
+    // }
     Future(() async {
       final currentWeatherModel = await ref
           .read(currentWeatherForcastPProvider.notifier)
-          .getCurrentWeather();
+          .getCurrentWeather(
+              placeMarks: widget.args.placeMarks,
+              location:
+                  widget.args.latitude == null || widget.args.longitude == null
+                      ? null
+                      : LocationModel(
+                          latitude: widget.args.latitude!,
+                          longitude: widget.args.longitude!));
       ref
           .read(currentWeatherForcastPProvider.notifier)
           .saveWheatherInLocalDB(currentWeatherModel);

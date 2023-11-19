@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:weather_app/utils/theme/custom_theme/text_theme.dart';
 
 class CAppTheme {
   CAppTheme._();
@@ -12,11 +11,7 @@ class CAppTheme {
   /// It also sets the primary color to blue and enables Material 3.
   static final lightTheme = ThemeData(
       colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
-      textTheme: GoogleFonts.robotoSlabTextTheme(TextTheme(
-          bodyLarge: TextStyle(color: Colors.grey.shade300),
-          headlineMedium: TextStyle(color: Colors.grey.shade300),
-          bodyMedium: const TextStyle(color: Colors.white),
-          headlineSmall: TextStyle(color: Colors.grey.shade400))),
+      textTheme: GoogleFonts.robotoSlabTextTheme(),
       primaryColor: Colors.blue,
       useMaterial3: true,
       scaffoldBackgroundColor: Colors.white);
@@ -29,7 +24,7 @@ class CAppTheme {
   static final dartTheme = ThemeData(
       primaryColor: Colors.blue,
       colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
-      textTheme: CustomTextTheme.darkTextTheme,
+      // textTheme: CustomTextTheme.darkTextTheme,
       useMaterial3: true,
       scaffoldBackgroundColor: Colors.black12);
 }

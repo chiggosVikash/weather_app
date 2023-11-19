@@ -15,6 +15,7 @@ class DBWeatherModel extends DbWeatherEntity {
       super.windSpeed,
       super.icon});
 
+  double get tempInCelicus => temperature! - 273.15;
   DBWeatherModel copyWith({
     double? latitude,
     double? longitude,
