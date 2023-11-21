@@ -12,10 +12,14 @@ class LocalDbQueryImpl extends LocalDbQuery {
       await _isar.writeTxn(() async {
         final query = _isar.dBWeatherModels
             .filter()
+            .latitudeEqualTo(weatherData.latitude)
+            .longitudeEqualTo(weatherData.longitude)
+            .or()
             .localityEqualTo(weatherData.locality, caseSensitive: false)
             .build();
         final matched = await query.findAll();
         if (matched.isNotEmpty) {
+          print("Delete executed with total data ${matched.length}}");
           await query.deleteAll();
         }
         final status = await _isar.dBWeatherModels.put(weatherData);

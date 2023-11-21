@@ -15,6 +15,16 @@ class LocationP extends AsyncNotifier<LocationModel?> {
     return null;
   }
 
+  /// Retrieves the current location.
+  ///
+  /// If the current location has already been fetched and stored in the [state],
+  /// it returns the stored location. Otherwise, it fetches the current location
+  /// using the [_locationService] and updates the [state] with the fetched location.
+  ///
+  /// If an error occurs during the process, it updates the [state] with the error
+  /// and rethrows the error.
+  ///
+  /// Returns the current location if successful, otherwise returns null.
   Future<LocationModel?> getCurrentLocation() async {
     try {
       if (state.value != null) {

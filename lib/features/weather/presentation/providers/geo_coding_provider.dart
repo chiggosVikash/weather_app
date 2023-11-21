@@ -7,6 +7,10 @@ import 'package:weather_app/utils/services/geocoding_service/geo_coding_service.
 
 import '../../../../utils/services/geocoding_service/geo_coding_service_impl.dart';
 
+/// A provider for geocoding functionality.
+///
+/// This provider is responsible for retrieving geocoding data
+/// and converting it into a [GeocodingModel] object.
 final geocodingProvider = AsyncNotifierProvider<GeoCodingP, GeocodingModel>(() {
   return GeoCodingP();
 });

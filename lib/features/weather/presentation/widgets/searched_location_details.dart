@@ -25,9 +25,11 @@ class SearchedLocationDetails extends ConsumerWidget {
                   ),
                   (route) => false);
             },
-            child: ListTile(
-              title: Text("${locationData.placeMarks.first.subLocality}"),
-              subtitle: Text("${locationData.placeMarks.first.locality}"),
+            child: Card(
+              child: ListTile(
+                title: Text("${locationData.placeMarks.first.subLocality}"),
+                subtitle: Text("${locationData.placeMarks.first.locality}"),
+              ),
             ),
           );
         },

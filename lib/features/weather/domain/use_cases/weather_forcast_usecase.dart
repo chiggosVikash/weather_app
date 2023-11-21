@@ -97,6 +97,12 @@ class WeatherFocastUseCase {
     return totalTemp / totalWeatherCount;
   }
 
+  /// Saves the weather information in the local database.
+  ///
+  /// This method saves the provided [weatherModel] in the local database
+  /// using the [_weatherForcastRepo] repository.
+  ///
+  /// Throws an [Exception] if there is an error while saving the weather information.
   Future<void> saveWheatherInLocalDB(DBWeatherModel weatherModel) async {
     try {
       await _weatherForcastRepo.saveWheatherInLocalDB(weatherModel);
@@ -105,6 +111,9 @@ class WeatherFocastUseCase {
     }
   }
 
+  /// Retrieves all weather data from the weather forecast repository.
+  /// Returns a list of [DBWeatherModel] objects representing the weather data.
+  /// Throws an exception if an error occurs during the retrieval process.
   Future<List<DBWeatherModel>> getAllWeatherData() async {
     try {
       final weathers = await _weatherForcastRepo.getAllWeatherData();

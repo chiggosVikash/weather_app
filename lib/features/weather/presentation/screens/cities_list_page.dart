@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:weather_app/features/weather/presentation/providers/geo_coding_provider.dart';
 import 'package:weather_app/features/weather/presentation/providers/saved_weather_provider.dart';
 import 'package:weather_app/extension/context_extension.dart';
+import 'package:weather_app/features/weather/presentation/screens/individual_weather_info.dart';
 import 'package:weather_app/features/weather/presentation/widgets/cities_content.dart';
 import 'package:weather_app/widgets/transparent_card.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -107,7 +108,12 @@ class _CitiesListPageState extends ConsumerState<CitiesListPage> {
                                     Navigator.pushNamedAndRemoveUntil(
                                         context,
                                         "/",
-                                        arguments: placeMarks,
+                                        arguments: IndividualWeatherInfoArgs(
+                                            placeMarks: placeMarks,
+                                            latitude: savedWeathers
+                                                .value![index].latitude,
+                                            longitude: savedWeathers
+                                                .value![index].longitude),
                                         (route) => false);
                                   }
                                 },

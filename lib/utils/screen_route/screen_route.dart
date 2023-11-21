@@ -6,7 +6,7 @@ class ScreenRoute {
   Route<dynamic> onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
       case "/":
-        final args = settings.arguments as IndividualWeatherInfoArgs;
+        final args = settings.arguments as IndividualWeatherInfoArgs?;
         return MaterialPageRoute(
             builder: (context) => IndividualWeatherInfo(
                   args: args,
